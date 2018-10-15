@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "cells": [
+    {
+      "type": "cs",
+      "input": "importFiles"
+    },
+    {
+      "type": "cs",
+      "input": "importFiles [ \"C:\\\\Users\\\\Jeff\\\\Google Drive\\\\Tailored Process Optimization\\\\TPO\\\\Police_project\\\\Chicago\\\\Data\\\\Crimes_2010_to_present_cleaned.csv\" ]"
+    },
+    {
+      "type": "cs",
+      "input": "setupParse source_frames: [ \"nfs:\\\\C:\\\\Users\\\\Jeff\\\\Google Drive\\\\Tailored Process Optimization\\\\TPO\\\\Police_project\\\\Chicago\\\\Data\\\\Crimes_2010_to_present_cleaned.csv\" ]"
+    },
+    {
+      "type": "cs",
+      "input": "parseFiles\n  source_frames: [\"nfs:\\\\C:\\\\Users\\\\Jeff\\\\Google Drive\\\\Tailored Process Optimization\\\\TPO\\\\Police_project\\\\Chicago\\\\Data\\\\Crimes_2010_to_present_cleaned.csv\"]\n  destination_frame: \"Crimes_2010_to_present_cleaned1.hex\"\n  parse_type: \"CSV\"\n  separator: 44\n  number_columns: 6\n  single_quotes: false\n  column_names: [\"\",\"Date\",\"Primary Type\",\"Latitude\",\"Longitude\",\"Time\"]\n  column_types: [\"Numeric\",\"Time\",\"Enum\",\"Numeric\",\"Numeric\",\"Enum\"]\n  delete_on_done: true\n  check_header: 1\n  chunk_size: 3401728"
+    },
+    {
+      "type": "cs",
+      "input": "getFrameSummary \"Crimes_2010_to_present_cleaned1.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "assist splitFrame, \"Crimes_2010_to_present_cleaned1.hex\""
+    },
+    {
+      "type": "cs",
+      "input": "splitFrame \"Crimes_2010_to_present_cleaned1.hex\", [0.75], [\"Train_frame_0.750\",\"Val_frame_0.250\"], 548704"
+    },
+    {
+      "type": "cs",
+      "input": "getFrameSummary \"Train_frame_0.750\""
+    },
+    {
+      "type": "cs",
+      "input": "assist buildModel, null, training_frame: \"Train_frame_0.750\""
+    },
+    {
+      "type": "cs",
+      "input": "buildModel 'gbm', {\"model_id\":\"gbm-d910a86a-ff4e-4dc1-9001-4c2d3516e124\",\"training_frame\":\"Train_frame_0.750\",\"validation_frame\":\"Val_frame_0.250\",\"nfolds\":0,\"response_column\":\"Primary Type\",\"ignored_columns\":[\"C1\"],\"ignore_const_cols\":true,\"ntrees\":\"100\",\"max_depth\":5,\"min_rows\":10,\"nbins\":20,\"seed\":-1,\"learn_rate\":0.1,\"sample_rate\":1,\"col_sample_rate\":1,\"score_each_iteration\":false,\"score_tree_interval\":0,\"balance_classes\":false,\"max_confusion_matrix_size\":20,\"max_hit_ratio_k\":0,\"nbins_top_level\":1024,\"nbins_cats\":1024,\"r2_stopping\":1.7976931348623157e+308,\"stopping_rounds\":0,\"stopping_metric\":\"AUTO\",\"stopping_tolerance\":0.001,\"max_runtime_secs\":0,\"learn_rate_annealing\":1,\"distribution\":\"AUTO\",\"huber_alpha\":0.9,\"checkpoint\":\"\",\"col_sample_rate_per_tree\":1,\"min_split_improvement\":0.00001,\"histogram_type\":\"AUTO\",\"categorical_encoding\":\"AUTO\",\"build_tree_one_node\":false,\"sample_rate_per_class\":[],\"col_sample_rate_change_per_level\":1,\"max_abs_leafnode_pred\":1.7976931348623157e+308,\"pred_noise_bandwidth\":0}"
+    },
+    {
+      "type": "cs",
+      "input": "getModel \"gbm-d910a86a-ff4e-4dc1-9001-4c2d3516e124\""
+    },
+    {
+      "type": "cs",
+      "input": "exportModel \"gbm-d910a86a-ff4e-4dc1-9001-4c2d3516e124\""
+    },
+    {
+      "type": "raw",
+      "input": "exportModel \"gbm-d910a86a-ff4e-4dc1-9001-4c2d3516e124\", \"C:\\\\Users\\\\Jeff\\\\Google Drive\\\\Tailored Process Optimization\\\\TPO\\\\Police_project\\\\Chicago\\\\Model_Exports\\\\gbm-d910a86a-ff4e-4dc1-9001-4c2d3516e124\", overwrite: false"
+    }
+  ]
+}
